@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Добавить данные водителя</title>
+</head>
+
+<body>
+    <h1>Добавить данные водителя</h1>
+    <button id="showFormButton">Добавить данные</button>
+    <form id="dataForm" action="/routers/add_driver_data_router/add_driver_data_front" method="post"
+        style="display: none;">
+        <label for="name">Имя:</label>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <label for="other">Другая информация:</label>
+        <input type="text" name="other" id="other">
+        <br>
+        <label for="phone_number">Номер телефона:</label>
+        <input type="text" name="phone_number" id="phone_number">
+        <br>
+        <input type="submit" value="Добавить данные">
+    </form>
+
+    <script src="test_data_add.js"></script>
+
+</body>
+
+</html>
