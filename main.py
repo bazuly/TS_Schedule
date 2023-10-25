@@ -1,6 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from config import DATABASE_URL
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from fastapi_sqlalchemy import DBSessionMiddleware
 from routers import add_driver_data_router
 from routers import add_new_car_router

@@ -1,16 +1,19 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, HTTPException, Depends, Query, Request
 from schema import Driver_data as schema_driver_data
 from models import Driver_data as model_driver_data
 from fastapi_sqlalchemy import db
 from config import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter()
+router = APIRouter(prefix='/routers')
+templates = Jinja2Templates(directory='templates')
 """ Post data"""
 
 
-@router.post('/add_driver_data', response_model=schema_driver_data)
-async def add_driver_data(driver_data_add: schema_driver_data):
+@router.post('/add_driver_data_front/', response_model=schema_driver_data)
+async def add_driver_data(driver_data_add: schema_driver_data,
+                          request: Request):
     try:
         db_add_driver_data = model_driver_data(
             name=driver_data_add.name.lower(),
@@ -18,10 +21,14 @@ async def add_driver_data(driver_data_add: schema_driver_data):
             if driver_data_add.other else None,
             phone_number=driver_data_add.phone_number.lower()
             if driver_data_add.phone_number else None)
+
         db.session.add(db_add_driver_data)
         db.session.commit()
 
-        return db_add_driver_data
+        return templates.TemplateResponse('add_driver_data_test.html', {
+            'request': request,
+            'result': db_add_driver_data
+        })
 
     except HTTPException as e:
         return e
@@ -134,7 +141,6 @@ async def update_driver_data(
 
         if new_phone_number is not None:
             driver_data_query.phone_number = new_phone_number
-
 
         db.commit()
 
